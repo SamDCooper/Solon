@@ -1,5 +1,9 @@
 import setuptools
 
+requirements = []
+with open('requirements.txt') as f:
+  requirements = f.read().splitlines()
+
 setuptools.setup(
     name="Solon",
     version="0.0.1",
@@ -8,4 +12,5 @@ setuptools.setup(
     author_email="FalselyTrueBots@users.noreply.github.com",
     url="https://github.com/FalselyTrueBots",
     packages=["solon"],
+    install_requires=requirements,
     )
