@@ -4,3 +4,5 @@ venv/*
 Solon.egg-info/*
 build/*
 dist/*
+config.json
+logs/
