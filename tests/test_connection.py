@@ -13,7 +13,7 @@ class TestConnection(unittest.TestCase):
     def test_can_connect(self):
         prefix = "?"
         bot = Bot(command_prefix=prefix)
-        bot.run("NTQxMzQxNTE3Nzc2OTQ1MTYy.DzeDGw.qLpReWeYDZQ4chR02XuUUmFB8fs")
+        bot.run(solon.get_config("token"))
         self.assertTrue(False)
 
 
