@@ -97,7 +97,7 @@ forward_discord_py_cogs = []
 
 
 def get_bot():
-    m = importlib.import_module("cogs.utils.bot")
+    m = importlib.import_module("solon.bot")
     return m.Bot
 
 
