@@ -15,7 +15,7 @@ class EmojiError(SocratesRuntimeError):
 
 class Emoji:
     def __init__(self, guild_id, name, id=None, animated=False):
-        self.guild_id
+        self.guild_id = guild_id
         self.name = name
         self.id = id
         self.animated = False

@@ -517,7 +517,7 @@ class EmojiCodex:
             emoji = Emoji(guild_id=guild.id, name=dpy_emoji.name, id=emoji_id, animated=dpy_emoji.animated) if dpy_emoji else None
 
         elif is_emoji(sv):
-            emoji = Emoji(name=sv)
+            emoji = Emoji(guild_id=guild.id, name=sv)
 
         if emoji is None:
             raise CodexException(f"Cannot deserialize {sv} into an emoji. I only support custom emojis on this guild.")
