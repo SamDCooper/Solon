@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="Solon",
-    version="0.0.2",
+    version="0.0.3",
     description="discord.py wrapper for bot creation",
     author="Falsely True Bots",
     author_email="FalselyTrueBots@users.noreply.github.com",
