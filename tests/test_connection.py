@@ -1,20 +1,34 @@
+import discord
 import logging
-logging.basicConfig(level=logging.DEBUG)
 
 import unittest
 
 import solon
 
-from discord.ext.commands import Bot
+log = logging.getLogger(__name__)
+
+test_passed = False
+
+
+class MyClient(discord.Client):
+    async def on_ready(self):
+        global test_passed
+        test_passed = True
+        await self.logout()
+
 
 class TestConnection(unittest.TestCase):
-    """Tests basic connection ability"""
+    """Tests connection"""
 
-    def test_can_connect(self):
-        prefix = "?"
-        bot = Bot(command_prefix=prefix)
-        bot.run(solon.get_config("token"))
-        self.assertTrue(False)
+    def test_connection(self):
+        bot = MyClient()
+
+        async def do_test():
+            await bot.login(solon.get_config("token"))
+            await bot.connect(reconnect=False)
+            self.assertTrue(test_passed)
+
+        bot.loop.run_until_complete(do_test())
 
 
 if __name__ == "__main__":

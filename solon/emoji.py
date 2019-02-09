@@ -1,6 +1,10 @@
 import discord
+import logging
 
 from .core import SocratesRuntimeError
+from .core import get_bot
+
+log = logging.getLogger(__name__)
 
 __all__ = ["Emoji", "emoji_equals"]
 
@@ -10,7 +14,8 @@ class EmojiError(SocratesRuntimeError):
 
 
 class Emoji:
-    def __init__(self, name, id=None, animated=False):
+    def __init__(self, guild_id, name, id=None, animated=False):
+        self.guild_id
         self.name = name
         self.id = id
         self.animated = False
@@ -20,6 +25,20 @@ class Emoji:
 
     def is_unicode_emoji(self):
         return not self.is_custom_emoji()
+
+    @property
+    def discord_py_emoji(self):
+        if self.is_unicode_emoji():
+            return self.name
+        else:
+            guild = get_bot().get_guild(self.guild_id)
+            if guild:
+                for emoji in guild.emojis:
+                    if emoji.id == self.id:
+                        return emoji
+
+        log.warning(f"Could not get discord.py emoji for {self}.")
+        return None
 
     def __str__(self):
         if self.id is None:

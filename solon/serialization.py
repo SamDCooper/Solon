@@ -514,7 +514,7 @@ class EmojiCodex:
         if match:
             emoji_id = int(match.group(1))
             dpy_emoji = next((e for e in guild.emojis if e.id == emoji_id), None)
-            emoji = Emoji(name=dpy_emoji.name, id=emoji_id, animated=dpy_emoji.animated) if dpy_emoji else None
+            emoji = Emoji(guild_id=guild.id, name=dpy_emoji.name, id=emoji_id, animated=dpy_emoji.animated) if dpy_emoji else None
 
         elif is_emoji(sv):
             emoji = Emoji(name=sv)
