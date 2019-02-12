@@ -131,7 +131,7 @@ def register_scoreboard(scoreboard_cog, guild_id, settings):
                         roles_to_remove = [role for role in roles_to_remove if role in member.roles]
                     else:
                         roles_to_add = []
-                        roles_to_remove = [role for role in award_ranks if role in member.roles]
+                        roles_to_remove = [role for role in award_ranks.values() if role in member.roles]
 
                     reason = f"Awards redistribution"
                     if roles_to_add:
