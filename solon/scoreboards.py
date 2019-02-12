@@ -101,6 +101,7 @@ def register_scoreboard(scoreboard_cog, guild_id, settings):
     async def award_rankings(_):
         award_ranks = settings["award_ranks"]
         award_eligible = settings["award_eligible"]
+        award_ranks_exclude = settings.get("award_ranks_exclude", None)
 
         guild = Bot.get_guild(guild_id)
 
@@ -113,7 +114,15 @@ def register_scoreboard(scoreboard_cog, guild_id, settings):
         award_method = award_methods[award_method_key](sb)
         for user_id, score in award_method.modified_scoreboard:
             member = guild.get_member(user_id)
-            if member and award_eligible in member.roles:
+
+            excluded = False
+            if award_ranks_exclude:
+                for role in member.roles:
+                    if role in award_ranks_exclude:
+                        excluded = True
+                        break
+
+            if member and award_eligible in member.roles and not excluded:
                 roles_to_add, roles_to_remove = award_method.resolve_awards(member, score, award_ranks)
 
                 roles_to_add = [role for role in roles_to_add if role not in member.roles]
