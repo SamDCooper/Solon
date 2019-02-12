@@ -114,29 +114,31 @@ def register_scoreboard(scoreboard_cog, guild_id, settings):
         award_method = award_methods[award_method_key](sb)
         for user_id, score in award_method.modified_scoreboard:
             member = guild.get_member(user_id)
+            if member:
+                excluded = False
+                if award_ranks_exclude:
+                    for role in member.roles:
+                        if role in award_ranks_exclude:
+                            excluded = True
+                            break
 
-            excluded = False
-            if award_ranks_exclude:
-                for role in member.roles:
-                    if role in award_ranks_exclude:
-                        excluded = True
-                        break
+                if award_eligible in member.roles and not excluded:
+                    roles_to_add, roles_to_remove = award_method.resolve_awards(member, score, award_ranks)
 
-            if member and award_eligible in member.roles and not excluded:
-                roles_to_add, roles_to_remove = award_method.resolve_awards(member, score, award_ranks)
+                    roles_to_add = [role for role in roles_to_add if role not in member.roles]
+                    roles_to_remove = [role for role in roles_to_remove if role in member.roles]
 
-                roles_to_add = [role for role in roles_to_add if role not in member.roles]
-                roles_to_remove = [role for role in roles_to_remove if role in member.roles]
+                    reason = f"Awards redistribution"
+                    if roles_to_add:
+                        await member.add_roles(*roles_to_add, reason=reason)
+                        reason = None
 
-                reason = f"Awards redistribution"
-                if roles_to_add:
-                    await member.add_roles(*roles_to_add, reason=reason)
-                    reason = None
-                if roles_to_remove:
-                    await member.remove_roles(*roles_to_remove, reason=reason)
-                if roles_to_add or roles_to_remove:
-                    log.info(f"Adding roles {roles_to_add} and removing "
-                             f"roles {roles_to_remove} for {member} in {scoreboard_cog.identifier}")
+                    if roles_to_remove:
+                        await member.remove_roles(*roles_to_remove, reason=reason)
+
+                    if roles_to_add or roles_to_remove:
+                        log.info(f"Adding roles {roles_to_add} and removing "
+                                 f"roles {roles_to_remove} for {member} in {scoreboard_cog.identifier}")
 
     scoreboards_by_identifier[scoreboard_cog.__class__.__name__] = weakref.ref(scoreboard_cog)
     award_rankings.start(scoreboard_cog, timedelta_from_string(config["award_interval"]))
