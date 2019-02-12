@@ -122,9 +122,14 @@ def register_scoreboard(scoreboard_cog, guild_id, settings):
                             excluded = True
                             break
 
-                if award_eligible in member.roles and not excluded:
-                    roles_to_add, roles_to_remove = award_method.resolve_awards(member, score, award_ranks)
+                if award_eligible in member.roles:
+                    if not excluded:
+                        roles_to_add, roles_to_remove = award_method.resolve_awards(member, score, award_ranks)
+                    else:
+                        roles_to_add = []
+                        roles_to_remove = award_ranks[:]
 
+                    # Filter roles so we're not sending requests to add Rank X when the member already has Rank X
                     roles_to_add = [role for role in roles_to_add if role not in member.roles]
                     roles_to_remove = [role for role in roles_to_remove if role in member.roles]
 
