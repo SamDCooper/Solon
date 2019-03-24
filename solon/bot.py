@@ -145,7 +145,8 @@ guild_event_codex = {
     "on_message": lambda args: args[0].guild.id if args[0].guild else 0,
     "on_reaction_add": lambda args: args[0].message.guild.id if args[0].message.guild else 0,
     "on_reaction_remove": lambda args: args[0].message.guild.id if args[0].message.guild else 0,
-    "on_member_join": lambda args: args[0].guild.id if args[0].guild else 0
+    "on_member_join": lambda args: args[0].guild.id if args[0].guild else 0,
+    "on_member_update": lambda args: args[1].guild.id if args[1].guild else 0
 }
 
 
