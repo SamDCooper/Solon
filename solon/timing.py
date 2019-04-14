@@ -36,7 +36,7 @@ async def loop_function():
     global timed_events
     while True:
         dead_objects = []
-        now = datetime.datetime.now()
+        now = datetime.datetime.utcnow()
         for key, (obj_ref, callback, properties, timedelta) in timed_events.items():
             last_updated_time = datetime.datetime.utcfromtimestamp(data.last_updated_timestamp[key])
             if (now - last_updated_time) > timedelta:
@@ -89,7 +89,7 @@ class TimedEventFunction:
             # We assume latest time - most of the time a newly registered
             # looping function won't be due, and we don't want first-run
             # behaviour to be different for no reason
-            now = datetime.datetime.now()
+            now = datetime.datetime.utcnow()
             data.last_updated_timestamp[key] = now.timestamp()
 
         timed_events[key] = (weakref.ref(obj), self.callback, self.properties, timedelta)
