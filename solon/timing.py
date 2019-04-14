@@ -1,4 +1,5 @@
 import asyncio
+import calendar
 import datetime
 import logging
 import inspect
@@ -56,7 +57,7 @@ async def loop_function():
                     trace = traceback.format_exc()
                     log.error(f"{e}\n{trace}")
 
-                data.last_updated_timestamp[key] = now.timestamp()
+                data.last_updated_timestamp[key] = calendar.timegm(now.timetuple())
 
         if len(dead_objects) > 0:
             timed_events = {k: v for k, v in timed_events.items() if k not in dead_objects}

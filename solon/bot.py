@@ -426,7 +426,9 @@ class CentralCog:
         Bot.add_cog(CommandCog())
 
         cogs_to_load = get_cogs_to_load()
-        log.info(f"Bot ready. Loading the following cogs: {cogs_to_load}")
+        log.info(f"Bot ready.")
+        log.info(f"Connected to the following servers: {[g.name for g in Bot.guilds]}")
+        log.info(f"Loading the following cogs: {cogs_to_load}")
         for identifier in cogs_to_load:
             cog_type_name, guild_id = parse_identifier(identifier)
             if cog_type_name not in all_cog_types:
