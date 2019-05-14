@@ -324,7 +324,8 @@ def SerializedStructure(structure_name, default_settings):
         def codex_deserialize(cls, serialized_data, guild):
             value_serialized = serialized_data.value_serialized
             try:
-                dict_of_serialized = {k.strip().lower(): v.strip() for k, v in ast.literal_eval(value_serialized).items()}
+                dict_of_serialized = {k.strip().lower(): v.strip() for k, v in
+                                      ast.literal_eval(value_serialized).items()}
             except Exception:
                 raise SerializationError("Cannot parse this structure, please check your syntax.")
 
@@ -514,7 +515,8 @@ class EmojiCodex:
         if match:
             emoji_id = int(match.group(1))
             dpy_emoji = next((e for e in guild.emojis if e.id == emoji_id), None)
-            emoji = Emoji(guild_id=guild.id, name=dpy_emoji.name, id=emoji_id, animated=dpy_emoji.animated) if dpy_emoji else None
+            emoji = Emoji(guild_id=guild.id, name=dpy_emoji.name, id=emoji_id,
+                          animated=dpy_emoji.animated) if dpy_emoji else None
 
         elif is_emoji(sv):
             emoji = Emoji(guild_id=guild.id, name=sv)

@@ -75,7 +75,9 @@ def get_setting_value(identifier, field_name):
                                              type_name=type_to_type_name(base_setting.key_element_class))
             deserialized_subfield_name = deserialize(serialized_data, guild)
 
-            return base_setting[deserialized_subfield_name]
+            setting_value = base_setting.get(deserialized_subfield_name, None)
+            if setting_value is not None:
+                return setting_value
 
     raise SettingsError("There is no field with that name.")
 

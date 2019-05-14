@@ -24,7 +24,7 @@ from .settings import create_settings
 from .settings import get_setting_value
 
 __all__ = ["Bot", "Cog", "Command", "Event", "parse_identifier", "get_identifier", "check_permissions",
-           "get_name_from_user_id"]
+           "get_name_from_user_id", "get_member_or_user"]
 
 log = logging.getLogger(__name__)
 config = get_config(__name__)
@@ -73,6 +73,16 @@ class BotType(BaseBotType):
 
 
 Bot = BotType(**config["bot_options"])
+
+
+def get_member_or_user(guild_id, user_id):
+    guild = Bot.get_guild(guild_id)
+    member = guild.get_member(user_id)
+    if member is not None:
+        return member
+
+    else:
+        return Bot.get_user(user_id)  # can return None
 
 
 def get_name_from_user_id(guild_id, user_id):
