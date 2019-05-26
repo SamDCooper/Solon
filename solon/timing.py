@@ -81,17 +81,19 @@ class TimedEventFunction:
         self.callback = callback
         self.properties = properties
 
-    def start(self, obj, timedelta):
+    def start(self, obj, timedelta, *, run_at_start=False):
         key = f"{type(obj).__name__}.{self.callback.__name__}"
         if key in timed_events:
             raise DynamicNameCollisionError(f"There is already a timed event by key {key} running.")
 
         if key not in data.last_updated_timestamp:
-            # We assume latest time - most of the time a newly registered
-            # looping function won't be due, and we don't want first-run
-            # behaviour to be different for no reason
-            now = datetime.datetime.utcnow()
-            data.last_updated_timestamp[key] = now.timestamp()
+            # Most of the time a newly registered looping function won't be due, and we don't want first-run
+            # behaviour to be different for no reason. However, we allow this to be overridden with a parameter.
+            if run_at_start:
+                data.last_updated_timestamp[key] = 0
+            else:
+                now = datetime.datetime.utcnow()
+                data.last_updated_timestamp[key] = now.timestamp()
 
         timed_events[key] = (weakref.ref(obj), self.callback, self.properties, timedelta)
 
