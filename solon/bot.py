@@ -184,7 +184,7 @@ def Event():
     return wrapper
 
 
-class CommandCog:
+class CommandCog(discord.Cog):
     pass
 
 
@@ -386,7 +386,7 @@ def get_cogs_to_load(guild_id=None):
     return cogs_to_load
 
 
-class AliasCog:
+class AliasCog(discord.Cog):
     pass
 
 
@@ -410,7 +410,7 @@ def setup_aliases():
     Bot.add_cog(AliasCog())
 
 
-class CentralCog:
+class CentralCog(discord.Cog):
     @staticmethod
     async def on_guild_join(guild):
         cogs_to_load = get_cogs_to_load(guild.id)
