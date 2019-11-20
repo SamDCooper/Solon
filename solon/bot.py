@@ -412,6 +412,7 @@ def setup_aliases():
 
 class CentralCog(discord.ext.commands.Cog):
     @staticmethod
+    @discord.ext.commands.Cog.listener()
     async def on_guild_join(guild):
         cogs_to_load = get_cogs_to_load(guild.id)
         log.info(f"Bot joined guild {guild}. Loading the following cogs: {cogs_to_load}")
@@ -421,6 +422,7 @@ class CentralCog(discord.ext.commands.Cog):
             await load_cog(cog_type, guild_id)
 
     @staticmethod
+    @discord.ext.commands.Cog.listener()
     async def on_guild_remove(guild):
         log.info(f"Bot has left {guild} - disabling cogs.")
         guild_cogs = [cog.__name__ for cog in Bot.cogs if parse_identifier(cog.__name__)[1] == guild.id]
@@ -431,6 +433,7 @@ class CentralCog(discord.ext.commands.Cog):
             data.active_cog_overrides[identifier] = True
 
     @staticmethod
+    @discord.ext.commands.Cog.listener()
     async def on_ready():
         if config["disable_help"]:
             Bot.remove_command("help")
